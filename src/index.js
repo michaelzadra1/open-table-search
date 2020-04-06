@@ -1,8 +1,10 @@
+import 'typeface-roboto';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import reduxThunk from 'redux-thunk';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 import App from './components/App';
 import reducers from './reducers';
@@ -15,6 +17,7 @@ const store = createStore(
 
 ReactDOM.render(
 	<React.StrictMode>
+		<CssBaseline />
 		<Provider store={store}>
 			<App />
 		</Provider>
