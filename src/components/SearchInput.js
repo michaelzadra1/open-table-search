@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import {
 	TextField,
 	Box,
@@ -34,6 +35,21 @@ const filterOptions = createFilterOptions({
 });
 
 class SearchInput extends Component {
+	static propTypes = {
+		fetchOptions: PropTypes.func.isRequired,
+		updateSearchQuery: PropTypes.func.isRequired,
+		closeSearchOptions: PropTypes.func.isRequired,
+		setSearchOption: PropTypes.func.isRequired,
+		search: PropTypes.shape({
+			options: PropTypes.arrayOf(PropTypes.string).isRequired,
+			loading: PropTypes.bool.isRequired,
+			isPopupOpen: PropTypes.bool.isRequired,
+			query: PropTypes.string,
+			selectedOption: PropTypes.string,
+			error: PropTypes.string
+		})
+	};
+
 	componentDidMount() {
 		this.props.fetchOptions();
 	}

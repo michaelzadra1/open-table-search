@@ -25,7 +25,6 @@ export default (state = INITIAL_STATE, action) => {
 		case FETCH_OPTIONS_FAIL:
 			return {
 				...state,
-				options: action.payload,
 				loading: false,
 				error: 'Unexpected Error - Check Connection'
 			};
