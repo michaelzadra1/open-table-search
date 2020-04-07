@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { TextField, Box } from '@material-ui/core';
+import { TextField, Box, CircularProgress } from '@material-ui/core';
 import Autocomplete, {
 	createFilterOptions
 } from '@material-ui/lab/Autocomplete';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import styled from 'styled-components';
 
-import { fetchOptions } from '../actions';
+import {
+	updateSearchQuery,
+	closeSearchOptions,
+	fetchOptions,
+	setSearchOption
+} from '../actions';
 
 const SearchAutocompleteInput = styled(Autocomplete)`
 	width: 300px;
@@ -26,20 +31,22 @@ class SearchInput extends Component {
 		this.props.fetchOptions();
 	}
 
-	onSearchInputChange = (e) => {
+	onSearchQueryChange = (e) => {
 		const query = e.target.value;
-		console.log(query);
+		this.props.updateSearchQuery(query);
 	};
 
 	renderSearchInput = (params) => {
 		const { InputProps } = params;
+
+		const { search } = this.props;
 
 		return (
 			<TextField
 				{...params}
 				label={'Search for a City'}
 				placeholder={'Search for a City'}
-				onChange={this.onSearchInputChange}
+				onChange={this.onSearchQueryChange}
 				variant="outlined"
 				InputProps={{
 					...InputProps,
@@ -47,6 +54,14 @@ class SearchInput extends Component {
 						<Box mr={1}>
 							<LocationCityIcon />
 						</Box>
+					),
+					endAdornment: (
+						<React.Fragment>
+							{search.loading ? (
+								<CircularProgress color="inherit" size={20} />
+							) : null}
+							{InputProps.endAdornment}
+						</React.Fragment>
 					)
 				}}
 			/>
@@ -54,14 +69,18 @@ class SearchInput extends Component {
 	};
 
 	render() {
-		const { search } = this.props;
+		const { search, closeSearchOptions, setSearchOption } = this.props;
 
 		return (
 			<Box display="flex" justifyContent="center" width={'100%'} mt={1.5}>
 				<SearchAutocompleteInput
 					id="city-search-options"
-					onChange={(_, value) => console.log(value)}
+					onChange={(_, value) => setSearchOption(value)}
 					autoHighlight
+					inputValue={search.selectedOption}
+					disabled={search.loading}
+					open={search.isPopupOpen}
+					onClose={closeSearchOptions}
 					forcePopupIcon={false}
 					filterOptions={filterOptions}
 					options={search.options}
@@ -72,12 +91,11 @@ class SearchInput extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
-	const { search } = state;
-
-	return { search };
-};
+const mapStateToProps = (state) => ({ search: state.search });
 
 export default connect(mapStateToProps, {
-	fetchOptions
+	updateSearchQuery,
+	closeSearchOptions,
+	fetchOptions,
+	setSearchOption
 })(SearchInput);
