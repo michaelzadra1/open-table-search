@@ -1,18 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import {
-	Container,
-	Grid,
-	Card,
-	CardMedia,
-	CardContent,
-	Typography,
-	CardActions,
-	Button,
-	Box
-} from '@material-ui/core';
+import { Container, Grid, Typography } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { LocationOn, AttachMoney } from '@material-ui/icons';
+
+import RestaurantCard from './RestaurantCard';
 
 const restaurants = [
 	{
@@ -45,30 +36,6 @@ const ResturantGrid = styled(Grid)`
 	list-style: none;
 `;
 
-const RestaurantCard = styled(Card)`
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-`;
-
-const RestaurantCardMedia = styled(CardMedia)`
-	padding-top: 50%;
-`;
-
-const RestaurantCardContent = styled(CardContent)`
-	flex-grow: 1;
-`;
-
-const RestaurantInformation = styled(Box)`
-	display: flex;
-
-	padding-bottom: ${theme.spacing(1)}px;
-
-	svg {
-		margin-right: ${theme.spacing(1)}px;
-	}
-`;
-
 const RestaurantList = () => {
 	const renderList = (restaurants) => {
 		return (
@@ -82,55 +49,7 @@ const RestaurantList = () => {
 						sm={6}
 						md={4}
 					>
-						<RestaurantCard>
-							<RestaurantCardMedia
-								image={restaurant.image_url}
-								title={restaurant.name}
-							/>
-							<RestaurantCardContent>
-								<Typography gutterBottom variant="h6" component="h3">
-									{restaurant.name}
-								</Typography>
-								<Typography
-									color="textSecondary"
-									gutterBottom
-									component="span"
-									aria-label={`${restaurant.price} out of 5 dollar signs`}
-									role="img"
-								>
-									{[...Array(restaurant.price)].map((_, i) => (
-										<AttachMoney key={i} />
-									))}
-								</Typography>
-								<RestaurantInformation>
-									<LocationOn />
-									<div>
-										<Typography
-											color="textSecondary"
-											gutterBottom
-											aria-label="Location details"
-										>
-											{restaurant.address}
-											<br />
-											{restaurant.area}
-											<br />
-											{restaurant.postal_code}
-										</Typography>
-									</div>
-								</RestaurantInformation>
-							</RestaurantCardContent>
-							<CardActions>
-								<Button
-									color="primary"
-									href={restaurant.reserve_url}
-									target="_blank"
-									aria-label="Make Reservation on OpenTable"
-									role="link"
-								>
-									Make Reservation
-								</Button>
-							</CardActions>
-						</RestaurantCard>
+						<RestaurantCard {...restaurant}></RestaurantCard>
 					</Grid>
 				))}
 			</ResturantGrid>
