@@ -15,13 +15,16 @@ const CallToAction = () => {
 					OpenTable Search
 				</Typography>
 				<Typography
+					component="h2"
 					variant="h5"
 					align="center"
 					color="textSecondary"
 					paragraph
 				>
-					Search for <em>over 21,000</em> restaurants across <em>2,700</em>{' '}
-					cities
+					<span>
+						Search for <em>over 21,000</em> restaurants across
+						<em> 2,700</em> cities
+					</span>
 				</Typography>
 			</Box>
 		</Container>

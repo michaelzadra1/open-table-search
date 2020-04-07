@@ -6,7 +6,8 @@ import {
 	Box,
 	CircularProgress,
 	FormControl,
-	FormHelperText
+	FormHelperText,
+	Typography
 } from '@material-ui/core';
 import Autocomplete, {
 	createFilterOptions
@@ -72,7 +73,6 @@ class SearchInput extends Component {
 			<TextField
 				{...params}
 				label="Search for a City"
-				placeholder="Search for a City"
 				variant="outlined"
 				value={search.query}
 				onChange={this.onSearchQueryChange}
@@ -105,26 +105,31 @@ class SearchInput extends Component {
 		const { search, closeSearchOptions } = this.props;
 
 		return (
-			<Box display="flex" justifyContent="center" width={'100%'} mt={1.5}>
-				<FormControl error={!isEmpty(search.error)}>
-					<SearchAutocompleteInput
-						id="search-options"
-						onChange={this.onSearchOptionChange}
-						autoHighlight
-						inputValue={search.selectedOption}
-						disabled={search.loading || !isEmpty(search.error)}
-						open={search.isPopupOpen}
-						onClose={closeSearchOptions}
-						forcePopupIcon={false}
-						filterOptions={filterOptions}
-						options={search.options}
-						renderInput={(params) => this.renderSearchInput(params)}
-					/>
-					{!isEmpty(search.error) ? (
-						<FormHelperText>{search.error}</FormHelperText>
-					) : null}
-				</FormControl>
-			</Box>
+			<React.Fragment>
+				<Typography component="h2" variant="srOnly">
+					Start search by typing and selecting a city in the input below
+				</Typography>
+				<Box display="flex" justifyContent="center" width={'100%'} mt={1.5}>
+					<FormControl error={!isEmpty(search.error)}>
+						<SearchAutocompleteInput
+							id="search-options"
+							onChange={this.onSearchOptionChange}
+							autoHighlight
+							inputValue={search.selectedOption}
+							disabled={search.loading || !isEmpty(search.error)}
+							open={search.isPopupOpen}
+							onClose={closeSearchOptions}
+							forcePopupIcon={false}
+							filterOptions={filterOptions}
+							options={search.options}
+							renderInput={(params) => this.renderSearchInput(params)}
+						/>
+						{!isEmpty(search.error) ? (
+							<FormHelperText>{search.error}</FormHelperText>
+						) : null}
+					</FormControl>
+				</Box>
+			</React.Fragment>
 		);
 	}
 }
