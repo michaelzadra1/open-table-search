@@ -38,7 +38,11 @@ export default (state = INITIAL_STATE, action) => {
 		case CLOSE_SEARCH_OPTIONS:
 			return { ...state, isPopupOpen: false };
 		case SET_SEARCH_OPTION:
-			return { ...state, selectedOption: action.payload };
+			return {
+				...state,
+				query: action.payload,
+				selectedOption: action.payload
+			};
 		default:
 			return state;
 	}

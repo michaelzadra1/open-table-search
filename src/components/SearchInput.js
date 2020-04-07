@@ -44,9 +44,9 @@ class SearchInput extends Component {
 			options: PropTypes.arrayOf(PropTypes.string).isRequired,
 			loading: PropTypes.bool.isRequired,
 			isPopupOpen: PropTypes.bool.isRequired,
-			query: PropTypes.string,
+			query: PropTypes.string.isRequired,
 			selectedOption: PropTypes.string,
-			error: PropTypes.string
+			error: PropTypes.string.isRequired
 		})
 	};
 
@@ -67,9 +67,10 @@ class SearchInput extends Component {
 		return (
 			<TextField
 				{...params}
-				label={'Search for a City'}
-				placeholder={'Search for a City'}
+				label="Search for a City"
+				placeholder="Search for a City"
 				variant="outlined"
+				value={search.query}
 				onChange={this.onSearchQueryChange}
 				error={!isEmpty(search.error)}
 				InputProps={{
