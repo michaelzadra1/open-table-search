@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 import {
@@ -112,9 +113,28 @@ const RestaurantList = (props) => {
 	);
 };
 
+RestaurantList.propTypes = {
+	restaurants: PropTypes.shape({
+		restaurants: PropTypes.array,
+		totalEntries: PropTypes.number,
+		perPage: PropTypes.number,
+		page: PropTypes.number,
+		loading: PropTypes.bool,
+		error: PropTypes.string
+	}).isRequired,
+	search: PropTypes.shape({
+		searchTouched: PropTypes.bool,
+		selectedOption: PropTypes.string
+	}).isRequired,
+	executeSearch: PropTypes.func.isRequired
+};
+
 const mapStateToProps = (state) => ({
 	restaurants: state.restaurants,
-	search: state.search
+	search: {
+		selectedOption: state.search.selectedOption,
+		searchTouched: state.search.searchTouched
+	}
 });
 
 export default connect(mapStateToProps, { executeSearch })(RestaurantList);
