@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { TextField, Box } from '@material-ui/core';
 import Autocomplete, {
 	createFilterOptions
 } from '@material-ui/lab/Autocomplete';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import styled from 'styled-components';
+
+import { fetchOptions } from '../actions';
 
 const SearchAutocompleteInput = styled(Autocomplete)`
 	width: 300px;
@@ -19,6 +22,10 @@ const filterOptions = createFilterOptions({
 });
 
 class SearchInput extends Component {
+	componentDidMount() {
+		this.props.fetchOptions();
+	}
+
 	onSearchInputChange = (e) => {
 		const query = e.target.value;
 		console.log(query);
@@ -47,6 +54,8 @@ class SearchInput extends Component {
 	};
 
 	render() {
+		const { search } = this.props;
+
 		return (
 			<Box display="flex" justifyContent="center" width={'100%'} mt={1.5}>
 				<SearchAutocompleteInput
@@ -55,7 +64,7 @@ class SearchInput extends Component {
 					autoHighlight
 					forcePopupIcon={false}
 					filterOptions={filterOptions}
-					options={['Toronto', 'Ottawa']}
+					options={search.options}
 					renderInput={(params) => this.renderSearchInput(params)}
 				/>
 			</Box>
@@ -63,4 +72,12 @@ class SearchInput extends Component {
 	}
 }
 
-export default SearchInput;
+const mapStateToProps = (state) => {
+	const { search } = state;
+
+	return { search };
+};
+
+export default connect(mapStateToProps, {
+	fetchOptions
+})(SearchInput);
