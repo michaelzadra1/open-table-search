@@ -59,6 +59,10 @@ class SearchInput extends Component {
 		this.props.updateSearchQuery(query);
 	};
 
+	onSearchOptionChange = (_, value) => {
+		this.props.setSearchOption(value);
+	};
+
 	renderSearchInput = (params) => {
 		const { InputProps } = params;
 
@@ -83,7 +87,11 @@ class SearchInput extends Component {
 					endAdornment: (
 						<React.Fragment>
 							{search.loading ? (
-								<CircularProgress color="inherit" size={20} />
+								<CircularProgress
+									color="inherit"
+									size={20}
+									data-testid="loading-options"
+								/>
 							) : null}
 							{InputProps.endAdornment}
 						</React.Fragment>
@@ -94,14 +102,14 @@ class SearchInput extends Component {
 	};
 
 	render() {
-		const { search, closeSearchOptions, setSearchOption } = this.props;
+		const { search, closeSearchOptions } = this.props;
 
 		return (
 			<Box display="flex" justifyContent="center" width={'100%'} mt={1.5}>
 				<FormControl error={!isEmpty(search.error)}>
 					<SearchAutocompleteInput
-						id="city-search-options"
-						onChange={(_, value) => setSearchOption(value)}
+						id="search-options"
+						onChange={this.onSearchOptionChange}
 						autoHighlight
 						inputValue={search.selectedOption}
 						disabled={search.loading || !isEmpty(search.error)}
