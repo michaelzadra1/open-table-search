@@ -1,8 +1,7 @@
 import {
 	EXECUTE_SEARCH,
 	EXECUTE_SEARCH_SUCCESS,
-	EXECUTE_SEARCH_FAIL,
-	UPDATE_PAGE
+	EXECUTE_SEARCH_FAIL
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -33,11 +32,6 @@ export default (state = INITIAL_STATE, action) => {
 				loading: false,
 				error:
 					'Unexpected error searching for restaurants. Please try again later.'
-			};
-		case UPDATE_PAGE:
-			return {
-				...state,
-				page: action.payload
 			};
 		default:
 			return state;
