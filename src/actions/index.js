@@ -2,10 +2,12 @@ import openTableApi from '../apis/openTable';
 import {
 	UPDATE_SEARCH_QUERY,
 	CLOSE_SEARCH_OPTIONS,
-	SET_SEARCH_OPTION,
+	EXECUTE_SEARCH,
 	FETCH_OPTIONS,
 	FETCH_OPTIONS_SUCCESS,
-	FETCH_OPTIONS_FAIL
+	FETCH_OPTIONS_FAIL,
+	EXECUTE_SEARCH_SUCCESS,
+	EXECUTE_SEARCH_FAIL
 } from '../actions/types';
 
 export const fetchOptions = () => async (dispatch) => {
@@ -31,9 +33,17 @@ export const closeSearchOptions = () => {
 	};
 };
 
-export const setSearchOption = (option) => {
-	return {
-		type: SET_SEARCH_OPTION,
-		payload: option
-	};
+// Restaurants
+export const executeSearch = (option) => async (dispatch) => {
+	dispatch({ type: EXECUTE_SEARCH, payload: option });
+	try {
+		const res = await openTableApi.get('/restaurants', {
+			params: {
+				city: option
+			}
+		});
+		dispatch({ type: EXECUTE_SEARCH_SUCCESS, payload: res.data });
+	} catch (err) {
+		dispatch({ type: EXECUTE_SEARCH_FAIL });
+	}
 };

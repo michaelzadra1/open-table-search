@@ -20,7 +20,7 @@ import {
 	updateSearchQuery,
 	closeSearchOptions,
 	fetchOptions,
-	setSearchOption
+	executeSearch
 } from '../actions';
 
 const SearchAutocompleteInput = styled(Autocomplete)`
@@ -40,7 +40,7 @@ class SearchInput extends Component {
 		fetchOptions: PropTypes.func.isRequired,
 		updateSearchQuery: PropTypes.func.isRequired,
 		closeSearchOptions: PropTypes.func.isRequired,
-		setSearchOption: PropTypes.func.isRequired,
+		executeSearch: PropTypes.func.isRequired,
 		search: PropTypes.shape({
 			options: PropTypes.arrayOf(PropTypes.string).isRequired,
 			loading: PropTypes.bool.isRequired,
@@ -61,7 +61,8 @@ class SearchInput extends Component {
 	};
 
 	onSearchOptionChange = (_, value) => {
-		this.props.setSearchOption(value);
+		this.props.updateSearchQuery(value);
+		this.props.executeSearch(value);
 	};
 
 	renderSearchInput = (params) => {
@@ -115,6 +116,7 @@ class SearchInput extends Component {
 							id="search-options"
 							onChange={this.onSearchOptionChange}
 							autoHighlight
+							disableClearable
 							inputValue={search.selectedOption}
 							disabled={search.loading || !isEmpty(search.error)}
 							open={search.isPopupOpen}
@@ -125,7 +127,9 @@ class SearchInput extends Component {
 							renderInput={(params) => this.renderSearchInput(params)}
 						/>
 						{!isEmpty(search.error) ? (
-							<FormHelperText>{search.error}</FormHelperText>
+							<FormHelperText role="error">
+								{search.error}
+							</FormHelperText>
 						) : null}
 					</FormControl>
 				</Box>
@@ -140,5 +144,5 @@ export default connect(mapStateToProps, {
 	updateSearchQuery,
 	closeSearchOptions,
 	fetchOptions,
-	setSearchOption
+	executeSearch
 })(SearchInput);

@@ -1,7 +1,8 @@
 import {
 	UPDATE_SEARCH_QUERY,
 	CLOSE_SEARCH_OPTIONS,
-	SET_SEARCH_OPTION,
+	EXECUTE_SEARCH,
+	EXECUTE_SEARCH_SUCCESS,
 	FETCH_OPTIONS,
 	FETCH_OPTIONS_SUCCESS,
 	FETCH_OPTIONS_FAIL
@@ -13,7 +14,8 @@ const INITIAL_STATE = {
 	query: '',
 	isPopupOpen: false,
 	selectedOption: null,
-	error: ''
+	error: '',
+	searchTouched: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -37,11 +39,16 @@ export default (state = INITIAL_STATE, action) => {
 			};
 		case CLOSE_SEARCH_OPTIONS:
 			return { ...state, isPopupOpen: false };
-		case SET_SEARCH_OPTION:
+		case EXECUTE_SEARCH:
 			return {
 				...state,
 				query: action.payload,
 				selectedOption: action.payload
+			};
+		case EXECUTE_SEARCH_SUCCESS:
+			return {
+				...state,
+				searchTouched: true
 			};
 		default:
 			return state;
