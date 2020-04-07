@@ -42,8 +42,8 @@ export default (state = INITIAL_STATE, action) => {
 		case EXECUTE_SEARCH:
 			return {
 				...state,
-				query: action.payload,
-				selectedOption: action.payload
+				query: action.payload.city,
+				selectedOption: action.payload.city
 			};
 		case EXECUTE_SEARCH_SUCCESS:
 			return {

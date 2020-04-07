@@ -34,12 +34,13 @@ export const closeSearchOptions = () => {
 };
 
 // Restaurants
-export const executeSearch = (option) => async (dispatch) => {
-	dispatch({ type: EXECUTE_SEARCH, payload: option });
+export const executeSearch = ({ city, page = 1 }) => async (dispatch) => {
+	dispatch({ type: EXECUTE_SEARCH, payload: { city } });
 	try {
 		const res = await openTableApi.get('/restaurants', {
 			params: {
-				city: option
+				city,
+				page
 			}
 		});
 		dispatch({ type: EXECUTE_SEARCH_SUCCESS, payload: res.data });
