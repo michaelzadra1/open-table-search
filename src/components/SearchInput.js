@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { TextField, Box, CircularProgress } from '@material-ui/core';
+import {
+	TextField,
+	Box,
+	CircularProgress,
+	FormControl,
+	FormHelperText
+} from '@material-ui/core';
 import Autocomplete, {
 	createFilterOptions
 } from '@material-ui/lab/Autocomplete';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import styled from 'styled-components';
+import { isEmpty } from 'lodash';
 
 import {
 	updateSearchQuery,
@@ -46,8 +53,9 @@ class SearchInput extends Component {
 				{...params}
 				label={'Search for a City'}
 				placeholder={'Search for a City'}
-				onChange={this.onSearchQueryChange}
 				variant="outlined"
+				onChange={this.onSearchQueryChange}
+				error={!isEmpty(search.error)}
 				InputProps={{
 					...InputProps,
 					startAdornment: (
@@ -73,19 +81,24 @@ class SearchInput extends Component {
 
 		return (
 			<Box display="flex" justifyContent="center" width={'100%'} mt={1.5}>
-				<SearchAutocompleteInput
-					id="city-search-options"
-					onChange={(_, value) => setSearchOption(value)}
-					autoHighlight
-					inputValue={search.selectedOption}
-					disabled={search.loading}
-					open={search.isPopupOpen}
-					onClose={closeSearchOptions}
-					forcePopupIcon={false}
-					filterOptions={filterOptions}
-					options={search.options}
-					renderInput={(params) => this.renderSearchInput(params)}
-				/>
+				<FormControl error={!isEmpty(search.error)}>
+					<SearchAutocompleteInput
+						id="city-search-options"
+						onChange={(_, value) => setSearchOption(value)}
+						autoHighlight
+						inputValue={search.selectedOption}
+						disabled={search.loading || !isEmpty(search.error)}
+						open={search.isPopupOpen}
+						onClose={closeSearchOptions}
+						forcePopupIcon={false}
+						filterOptions={filterOptions}
+						options={search.options}
+						renderInput={(params) => this.renderSearchInput(params)}
+					/>
+					{!isEmpty(search.error) ? (
+						<FormHelperText>{search.error}</FormHelperText>
+					) : null}
+				</FormControl>
 			</Box>
 		);
 	}

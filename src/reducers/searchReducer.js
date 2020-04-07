@@ -12,7 +12,8 @@ const INITIAL_STATE = {
 	loading: true,
 	query: '',
 	isPopupOpen: false,
-	selectedOption: null
+	selectedOption: null,
+	error: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -25,7 +26,8 @@ export default (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				options: action.payload,
-				loading: false
+				loading: false,
+				error: 'Unexpected Error - Check Connection'
 			};
 		case UPDATE_SEARCH_QUERY:
 			const query = action.payload;
