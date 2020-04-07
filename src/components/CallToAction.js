@@ -4,7 +4,7 @@ import { Container, Typography, Box } from '@material-ui/core';
 const CallToAction = () => {
 	return (
 		<Container maxWidth="sm">
-			<Box py={4}>
+			<Box my={3}>
 				<Typography
 					component="h1"
 					variant="h2"
@@ -23,7 +23,7 @@ const CallToAction = () => {
 				>
 					<span>
 						Search for <em>over 21,000</em> restaurants across
-						<em> 2,700</em> cities
+						<em> thousands </em> of cities
 					</span>
 				</Typography>
 			</Box>

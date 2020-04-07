@@ -10,18 +10,23 @@ import {
 	Box,
 	FormHelperText
 } from '@material-ui/core';
+import Pagination from '@material-ui/lab/Pagination';
 import { createMuiTheme } from '@material-ui/core/styles';
 import RestaurantCard from './RestaurantCard';
+import { executeSearch } from '../actions';
 
 const theme = createMuiTheme();
 
 const RestaurantListContainer = styled(Container)`
-	padding-top: ${theme.spacing(4)}px;
+	margin-top: ${theme.spacing(3)}px;
+	margin-bottom: ${theme.spacing(3)}px;
+	min-height: ${theme.spacing(4)}px;
 `;
 
 const ResturantGrid = styled(Grid)`
 	padding-inline-start: 0;
 	list-style: none;
+	justify-content: center;
 `;
 
 const RestaurantList = (props) => {
@@ -40,6 +45,22 @@ const RestaurantList = (props) => {
 			{props.restaurants.error}
 		</FormHelperText>
 	);
+
+	const renderPagination = () => {
+		const { totalEntries, perPage, page } = props.restaurants;
+
+		return (
+			<Box width={'100%'} display="flex" justifyContent="center" my={3}>
+				<Pagination
+					count={Math.ceil(totalEntries / perPage)}
+					page={page}
+					onChange={handlePageChange}
+					color="primary"
+					size="large"
+				/>
+			</Box>
+		);
+	};
 
 	const renderList = () => {
 		const { totalEntries, restaurants } = props.restaurants;
@@ -65,20 +86,28 @@ const RestaurantList = (props) => {
 		);
 	};
 
+	const handlePageChange = (_, page) => {
+		props.executeSearch({ page, city: props.search.selectedOption });
+	};
+
+	const { loading, error, totalEntries } = props.restaurants;
+
 	return (
 		<React.Fragment>
 			<Typography component="h1" variant="srOnly">
 				Restaurant search results
 			</Typography>
+			{totalEntries > 10 ? renderPagination() : null}
 			<RestaurantListContainer maxWidth="md">
 				<Box width={'100%'} display="flex" justifyContent="center">
-					{props.restaurants.loading
+					{loading
 						? renderLoadingCircle()
-						: isEmpty(props.restaurants.error)
+						: isEmpty(error)
 						? renderList()
 						: renderError()}
 				</Box>
 			</RestaurantListContainer>
+			{totalEntries > 10 ? renderPagination() : null}
 		</React.Fragment>
 	);
 };
@@ -88,4 +117,4 @@ const mapStateToProps = (state) => ({
 	search: state.search
 });
 
-export default connect(mapStateToProps)(RestaurantList);
+export default connect(mapStateToProps, { executeSearch })(RestaurantList);

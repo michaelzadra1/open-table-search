@@ -62,7 +62,7 @@ class SearchInput extends Component {
 
 	onSearchOptionChange = (_, value) => {
 		this.props.updateSearchQuery(value);
-		this.props.executeSearch(value);
+		this.props.executeSearch({ city: value });
 	};
 
 	renderSearchInput = (params) => {
@@ -110,7 +110,7 @@ class SearchInput extends Component {
 				<Typography component="h2" variant="srOnly">
 					Start search by typing and selecting a city in the input below
 				</Typography>
-				<Box display="flex" justifyContent="center" width={'100%'} mt={1.5}>
+				<Box display="flex" justifyContent="center" width={'100%'} my={3}>
 					<FormControl error={!isEmpty(search.error)}>
 						<SearchAutocompleteInput
 							id="search-options"
