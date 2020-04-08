@@ -16,7 +16,7 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 		case EXECUTE_SEARCH:
-			return { ...state, loading: true, restaurants: [], totalEntries: 0 };
+			return { ...state, loading: true, restaurants: [] };
 		case EXECUTE_SEARCH_SUCCESS:
 			const { restaurants, total_entries, current_page } = action.payload;
 			return {

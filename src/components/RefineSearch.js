@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
 import {
 	TextField,
 	Grid,
@@ -11,12 +12,7 @@ import {
 	Button
 } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
-import {
-	updateSearchArea,
-	updateSearchAddress,
-	updateSearchName
-} from '../actions';
-
+import { updateRefineQuery, executeSearch } from '../actions';
 const theme = createMuiTheme();
 
 const RefineSearchContainer = styled(Container)`
@@ -27,87 +23,116 @@ const RefineSearchContainer = styled(Container)`
 
 const RefineSearchButton = styled(Button)`
 	margin-top: ${theme.spacing(1)}px;
+	margin-left: ${theme.spacing(2)}px;
 `;
 
-const RefineSearchSubtitle = styled(Typography)`
-	font-size: 1rem;
-	font-weight: 400;
+const RefineSearchTextInput = styled(TextField)`
+	width: 300px;
 `;
 
 const RefineSearch = (props) => {
-	const noSearchResults = props.totalEntries === 0;
+	const {
+		refineSearch,
+		restaurants,
+		search,
+		updateRefineQuery,
+		executeSearch
+	} = props;
+
+	const handleRefineSearchSubmit = (target) => {
+		if (target.charCode == 13) {
+			executeSearch({
+				city: search.selectedOption,
+				page: restaurants.page,
+				refineQuery: refineSearch.refineQuery
+			});
+		}
+	};
 
 	const renderRefineFilters = () => {
 		return (
-			<RefineSearchContainer maxWidth="sm">
-				<Box
-					display="flex"
-					justifyContent="center"
-					alignItems="center"
-					flexDirection={'column'}
-					width={'100%'}
-					my={3}
-				>
-					<RefineSearchSubtitle gutterBottom component="h2" variant="h6">
-						<em>Refine Restaurant Results</em>
-					</RefineSearchSubtitle>
-					<Grid container spacing={1} justify="center" direction="row">
-						<Grid item xs={12} sm={6} md={4}>
-							<TextField
-								id="restaurant-name"
-								label="Name"
-								variant="outlined"
-								autoComplete="off"
-								onChange={(e) => props.updateSearchName(e.target.value)}
-								disabled={noSearchResults}
-							/>
-						</Grid>
-						<Grid item xs={12} sm={6} md={4}>
-							<TextField
-								id="restaurant-address"
-								label="Address"
-								variant="outlined"
-								autoComplete="off"
-								onChange={(e) =>
-									props.updateSearchAddress(e.target.value)
-								}
-								disabled={noSearchResults}
-							/>
-						</Grid>
-						<Grid item xs={12} sm={6} md={4}>
-							<TextField
-								id="restaurant-area"
-								label="Area"
-								variant="outlined"
-								autoComplete="off"
-								onChange={(e) => props.updateSearchArea(e.target.value)}
-								disabled={noSearchResults}
-							/>
-						</Grid>
-						<RefineSearchButton
-							variant="contained"
-							color="primary"
-							disabled={noSearchResults}
+			<React.Fragment>
+				<Typography component="h1" variant="srOnly">
+					Refine restaurant search results by name, address, or area
+				</Typography>
+				<RefineSearchContainer maxWidth="sm">
+					<Box
+						display="flex"
+						justifyContent="center"
+						alignItems="center"
+						flexDirection={'column'}
+						width={'100%'}
+						my={3}
+					>
+						<Box
+							display="flex"
+							justifyContent="center"
+							alignItems="center"
+							flexWrap="wrap"
 						>
-							Refine Results
-						</RefineSearchButton>
-					</Grid>
-				</Box>
-			</RefineSearchContainer>
+							<RefineSearchTextInput
+								id="refined-search-query"
+								label="Search by Address, Name, or Area"
+								variant="outlined"
+								autoComplete="off"
+								onBlur={(e) => updateRefineQuery(e.target.value)}
+								onKeyPress={handleRefineSearchSubmit}
+								disabled={!search.searchTouched}
+							/>
+							<RefineSearchButton
+								variant="contained"
+								color="primary"
+								disabled={!search.searchTouched}
+								onClick={() =>
+									executeSearch({
+										city: search.selectedOption,
+										page: restaurants.page,
+										refineQuery: refineSearch.refineQuery
+									})
+								}
+							>
+								Refine Results
+							</RefineSearchButton>
+						</Box>
+					</Box>
+				</RefineSearchContainer>
+			</React.Fragment>
 		);
 	};
 
-	return props.searchTouched ? renderRefineFilters() : null;
+	return search.searchTouched ? renderRefineFilters() : null;
 };
 
-const mapStateToProps = (state) => ({
-	refineSearch: state.refineSearch,
-	totalEntries: state.restaurants.totalEntries,
-	searchTouched: state.search.searchTouched
-});
+const mapStateToProps = (state) => {
+	const { refineSearch, restaurants, search } = state;
+	return {
+		refineSearch: refineSearch,
+		restaurants: {
+			totalEntries: restaurants.totalEntries,
+			page: restaurants.page
+		},
+		search: {
+			searchTouched: search.searchTouched,
+			selectedOption: search.selectedOption
+		}
+	};
+};
+
+RefineSearch.propTypes = {
+	refineSearch: PropTypes.shape({
+		refineQuery: PropTypes.string.isRequired
+	}),
+	restaurants: PropTypes.shape({
+		totalEntries: PropTypes.number.isRequired,
+		page: PropTypes.number.isRequired
+	}),
+	search: PropTypes.shape({
+		searchTouched: PropTypes.bool.isRequired,
+		selectedOption: PropTypes.string
+	})
+};
 
 export default connect(mapStateToProps, {
-	updateSearchArea,
-	updateSearchAddress,
-	updateSearchName
+	updateRefineQuery,
+	executeSearch
 })(RefineSearch);
