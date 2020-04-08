@@ -8,10 +8,9 @@ import {
 	FETCH_OPTIONS_FAIL,
 	EXECUTE_SEARCH_SUCCESS,
 	EXECUTE_SEARCH_FAIL,
-	UPDATE_SEARCH_AREA,
-	UPDATE_SEARCH_ADDRESS,
-	UPDATE_SEARCH_NAME
+	UPDATE_REFINE_QUERY
 } from '../actions/types';
+import { isEmpty, minBy } from 'lodash';
 
 export const fetchOptions = () => async (dispatch) => {
 	dispatch({ type: FETCH_OPTIONS });
@@ -37,15 +36,53 @@ export const closeSearchOptions = () => {
 };
 
 // Restaurants
-export const executeSearch = ({ city, page = 1 }) => async (dispatch) => {
+export const executeSearch = ({ city, page = 1, refineQuery = '' }) => async (
+	dispatch
+) => {
 	dispatch({ type: EXECUTE_SEARCH, payload: { city } });
 	try {
-		const res = await openTableApi.get('/restaurants', {
-			params: {
-				city,
-				page
-			}
-		});
+		let res;
+		// We perform a more complex search given a refine search query
+		if (!isEmpty(refineQuery)) {
+			const resNameSearch = await openTableApi.get('/restaurants', {
+				params: {
+					city,
+					page,
+					name: refineQuery
+				}
+			});
+			// NOTE: No API capability of searching by area
+			// const resAreaSearch = await openTableApi.get('/restaurants', {
+			// 	params: {
+			// 		city,
+			// 		page,
+			// 		area: refineQuery
+			// 	}
+			// });
+			const resAddressSearch = await openTableApi.get('/restaurants', {
+				params: {
+					city,
+					page,
+					address: refineQuery
+				}
+			});
+			// Get result with least amount of results - more precise
+			res = minBy([resNameSearch, resAddressSearch], (res) => {
+				if (res.data.total_entries !== 0) {
+					return res.data.total_entries;
+				}
+			});
+			// If all responses are 0, just return name search
+			res = res ? res : resNameSearch;
+		} else {
+			res = await openTableApi.get('/restaurants', {
+				params: {
+					city,
+					page
+				}
+			});
+		}
+
 		dispatch({ type: EXECUTE_SEARCH_SUCCESS, payload: res.data });
 	} catch (err) {
 		dispatch({ type: EXECUTE_SEARCH_FAIL });
@@ -53,21 +90,9 @@ export const executeSearch = ({ city, page = 1 }) => async (dispatch) => {
 };
 
 // Refine search
-export const updateSearchArea = (value) => {
+export const updateRefineQuery = (value) => {
 	return {
-		type: UPDATE_SEARCH_AREA,
-		payload: value
-	};
-};
-export const updateSearchAddress = (value) => {
-	return {
-		type: UPDATE_SEARCH_ADDRESS,
-		payload: value
-	};
-};
-export const updateSearchName = (value) => {
-	return {
-		type: UPDATE_SEARCH_NAME,
+		type: UPDATE_REFINE_QUERY,
 		payload: value
 	};
 };
