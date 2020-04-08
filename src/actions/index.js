@@ -7,7 +7,10 @@ import {
 	FETCH_OPTIONS_SUCCESS,
 	FETCH_OPTIONS_FAIL,
 	EXECUTE_SEARCH_SUCCESS,
-	EXECUTE_SEARCH_FAIL
+	EXECUTE_SEARCH_FAIL,
+	UPDATE_SEARCH_AREA,
+	UPDATE_SEARCH_ADDRESS,
+	UPDATE_SEARCH_NAME
 } from '../actions/types';
 
 export const fetchOptions = () => async (dispatch) => {
@@ -47,4 +50,24 @@ export const executeSearch = ({ city, page = 1 }) => async (dispatch) => {
 	} catch (err) {
 		dispatch({ type: EXECUTE_SEARCH_FAIL });
 	}
+};
+
+// Refine search
+export const updateSearchArea = (value) => {
+	return {
+		type: UPDATE_SEARCH_AREA,
+		payload: value
+	};
+};
+export const updateSearchAddress = (value) => {
+	return {
+		type: UPDATE_SEARCH_ADDRESS,
+		payload: value
+	};
+};
+export const updateSearchName = (value) => {
+	return {
+		type: UPDATE_SEARCH_NAME,
+		payload: value
+	};
 };

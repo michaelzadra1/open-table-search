@@ -11,6 +11,11 @@ import {
 	Button
 } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
+import {
+	updateSearchArea,
+	updateSearchAddress,
+	updateSearchName
+} from '../actions';
 
 const theme = createMuiTheme();
 
@@ -53,6 +58,7 @@ const RefineSearch = (props) => {
 								label="Name"
 								variant="outlined"
 								autoComplete="off"
+								onChange={(e) => props.updateSearchName(e.target.value)}
 								disabled={noSearchResults}
 							/>
 						</Grid>
@@ -62,6 +68,9 @@ const RefineSearch = (props) => {
 								label="Address"
 								variant="outlined"
 								autoComplete="off"
+								onChange={(e) =>
+									props.updateSearchAddress(e.target.value)
+								}
 								disabled={noSearchResults}
 							/>
 						</Grid>
@@ -71,6 +80,7 @@ const RefineSearch = (props) => {
 								label="Area"
 								variant="outlined"
 								autoComplete="off"
+								onChange={(e) => props.updateSearchArea(e.target.value)}
 								disabled={noSearchResults}
 							/>
 						</Grid>
@@ -96,4 +106,8 @@ const mapStateToProps = (state) => ({
 	searchTouched: state.search.searchTouched
 });
 
-export default connect(mapStateToProps, {})(RefineSearch);
+export default connect(mapStateToProps, {
+	updateSearchArea,
+	updateSearchAddress,
+	updateSearchName
+})(RefineSearch);
