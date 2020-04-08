@@ -62,7 +62,7 @@ const RestaurantCard = (props) => {
 					color="textSecondary"
 					gutterBottom
 					component="span"
-					aria-label={`${price} out of 5 dollar signs`}
+					aria-label={`${price} out of 4 dollar signs`}
 					role="img"
 				>
 					{[...Array(price)].map((_, i) => (
