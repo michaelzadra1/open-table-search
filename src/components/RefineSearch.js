@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 
 import {
 	TextField,
-	Grid,
 	Box,
 	Typography,
 	Container,
@@ -40,7 +39,7 @@ const RefineSearch = (props) => {
 	} = props;
 
 	const handleRefineSearchSubmit = (target) => {
-		if (target.charCode == 13) {
+		if (target.charCode === 13) {
 			executeSearch({
 				city: search.selectedOption,
 				page: restaurants.page,
