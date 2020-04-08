@@ -1,8 +1,21 @@
 # Open Table Search Application
 
-### Site URL
+## Site URL
 
 https://open-table-search.herokuapp.com/
+
+## Available Scripts
+
+### `npm run-script start-local`
+
+Runs the app in local development mode.<br />
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+### `npm t -- --coverage --watchAll=false`
+
+Provides view of full 100% test coverage using Jest
+
+## Technical Questions
 
 #### How long did you spend on the coding assignment? What would you add to your solution if you had more time? If you didn't spend much time on the coding test then use this as an opportunity to explain what you would add.
 
@@ -92,14 +105,3 @@ In my previous job, the source of most bottlenecks was linked to an abundance of
 	]
 }
 ```
-
-## Available Scripts
-
-### `npm run-script start-local`
-
-Runs the app in local development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-### `npm t -- --coverage --watchAll=false`
-
-Provides view of full 100% test coverage using Jest
