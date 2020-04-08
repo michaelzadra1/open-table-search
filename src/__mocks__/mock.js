@@ -473,7 +473,7 @@ export const longRestaurantsListMock = [
 		image_url: 'https://www.opentable.com/img/restimages/113791.jpg'
 	},
 	{
-		id: 21307,
+		id: 213072,
 		name: 'Beer Restaurant',
 		address: '1 Benvenuto Place',
 		city: 'Toronto',

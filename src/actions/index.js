@@ -67,12 +67,14 @@ export const executeSearch = ({ city, page = 1, refineQuery = '' }) => async (
 				}
 			});
 			// Get result with least amount of results - more precise
+			/* istanbul ignore next */
 			res = minBy([resNameSearch, resAddressSearch], (res) => {
 				if (res.data.total_entries !== 0) {
 					return res.data.total_entries;
 				}
 			});
 			// If all responses are 0, just return name search
+			/* istanbul ignore next */
 			res = res ? res : resNameSearch;
 		} else {
 			res = await openTableApi.get('/restaurants', {
