@@ -82,7 +82,6 @@ export const executeSearch = ({ city, page = 1, refineQuery = '' }) => async (
 				}
 			});
 		}
-
 		dispatch({ type: EXECUTE_SEARCH_SUCCESS, payload: res.data });
 	} catch (err) {
 		dispatch({ type: EXECUTE_SEARCH_FAIL });
