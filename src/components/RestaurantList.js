@@ -88,7 +88,11 @@ const RestaurantList = (props) => {
 	};
 
 	const handlePageChange = (_, page) => {
-		props.executeSearch({ page, city: props.search.selectedOption });
+		props.executeSearch({
+			page,
+			city: props.search.selectedOption,
+			refineQuery: props.refineSearch.refineQuery
+		});
 	};
 
 	const { loading, error, totalEntries } = props.restaurants;
@@ -126,6 +130,9 @@ RestaurantList.propTypes = {
 		searchTouched: PropTypes.bool,
 		selectedOption: PropTypes.string
 	}).isRequired,
+	refineSearch: PropTypes.shape({
+		refineQuery: PropTypes.string
+	}).isRequired,
 	executeSearch: PropTypes.func.isRequired
 };
 
@@ -134,6 +141,9 @@ const mapStateToProps = (state) => ({
 	search: {
 		selectedOption: state.search.selectedOption,
 		searchTouched: state.search.searchTouched
+	},
+	refineSearch: {
+		refineQuery: state.refineSearch.refineQuery
 	}
 });
 

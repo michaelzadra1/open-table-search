@@ -30,19 +30,12 @@ const RefineSearchTextInput = styled(TextField)`
 `;
 
 const RefineSearch = (props) => {
-	const {
-		refineSearch,
-		restaurants,
-		search,
-		updateRefineQuery,
-		executeSearch
-	} = props;
+	const { refineSearch, search, updateRefineQuery, executeSearch } = props;
 
 	const handleRefineSearchSubmit = (target) => {
 		if (target.charCode === 13) {
 			executeSearch({
 				city: search.selectedOption,
-				page: restaurants.page,
 				refineQuery: refineSearch.refineQuery
 			});
 		}
@@ -86,7 +79,6 @@ const RefineSearch = (props) => {
 								onClick={() =>
 									executeSearch({
 										city: search.selectedOption,
-										page: restaurants.page,
 										refineQuery: refineSearch.refineQuery
 									})
 								}
