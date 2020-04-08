@@ -75,11 +75,12 @@ const RefineSearch = (props) => {
 								label="Search by Address, Name, or Area"
 								variant="outlined"
 								autoComplete="off"
-								onBlur={(e) => updateRefineQuery(e.target.value)}
+								onChange={(e) => updateRefineQuery(e.target.value)}
 								onKeyPress={handleRefineSearchSubmit}
 								disabled={!search.searchTouched}
 							/>
 							<RefineSearchButton
+								data-testid="refine-search-button"
 								variant="contained"
 								color="primary"
 								disabled={!search.searchTouched}
