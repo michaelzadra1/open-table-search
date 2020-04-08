@@ -19,6 +19,7 @@
 		"typeface-roboto": "0.0.75"
 	},
 	"scripts": {
+		"start-local": "npm i && npm run-script dev",
 		"dev": "react-scripts start",
 		"start": "serve -s build",
 		"build": "react-scripts build",
