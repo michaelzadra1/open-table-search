@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import React from 'react';
 import { AppBar, Toolbar, Typography, Box } from '@material-ui/core';
 import RestaurantIcon from '@material-ui/icons/Restaurant';

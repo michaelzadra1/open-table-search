@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import React from 'react';
 import Header from './Header';
 import CallToAction from './CallToAction';
