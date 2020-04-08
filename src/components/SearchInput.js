@@ -20,7 +20,8 @@ import {
 	updateSearchQuery,
 	closeSearchOptions,
 	fetchOptions,
-	executeSearch
+	executeSearch,
+	updateRefineQuery
 } from '../actions';
 
 const SearchAutocompleteInput = styled(Autocomplete)`
@@ -61,8 +62,15 @@ class SearchInput extends Component {
 	};
 
 	onSearchOptionChange = (_, value) => {
-		this.props.updateSearchQuery(value);
-		this.props.executeSearch({ city: value });
+		const {
+			updateSearchQuery,
+			updateRefineQuery,
+			executeSearch
+		} = this.props;
+
+		updateSearchQuery(value);
+		updateRefineQuery('');
+		executeSearch({ city: value, refineQuery: '' });
 	};
 
 	renderSearchInput = (params) => {
@@ -144,5 +152,6 @@ export default connect(mapStateToProps, {
 	updateSearchQuery,
 	closeSearchOptions,
 	fetchOptions,
-	executeSearch
+	executeSearch,
+	updateRefineQuery
 })(SearchInput);

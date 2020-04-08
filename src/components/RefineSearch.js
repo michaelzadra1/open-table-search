@@ -69,6 +69,7 @@ const RefineSearch = (props) => {
 								autoComplete="off"
 								onChange={(e) => updateRefineQuery(e.target.value)}
 								onKeyPress={handleRefineSearchSubmit}
+								value={refineSearch.refineQuery}
 								disabled={!search.searchTouched}
 							/>
 							<RefineSearchButton
